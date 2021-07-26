@@ -1,0 +1,28 @@
+.suggestion {
+  margin: 30px 5px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.body-wrapper {
+  background-color: #88d9e6;
+}
+
+img {
+  height: 150px;
+}
+
+.suggestion-all-pets {
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 30px;
+  background-color: #51c2d3;
+}
+
+.suggestion-dog-name {
+  margin-top: 10px;
+  font-size: 30px;
+}
+
+.is-looking {
+  font-size: 15px;
+}
