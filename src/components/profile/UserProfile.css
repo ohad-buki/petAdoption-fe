@@ -1,0 +1,32 @@
+.profile-wrapper {
+  background-color: #198754;
+}
+.box-wrapper {
+  position: relative;
+  background-color: #c6ebbe;
+  width: 90%;
+  border-radius: 6px;
+  margin: 150px 0 50px 0;
+}
+
+.img-wrapper img {
+  border-radius: 50%;
+  height: 200px;
+  margin-top: -80px;
+  margin-bottom: 5px;
+}
+
+.profile-name {
+  font-size: 30px;
+}
+
+.edit-profile-btn-wrapper {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+.edit-profile-btn {
+  background-color: rgb(37, 37, 37);
+  color: white;
+}

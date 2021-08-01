@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 import Form from "react-bootstrap/Form";
+import { addData, getData, updateData } from "../../mockData";
 
 export default function Login() {
+  const emailRef = useRef();
+  const passRef = useRef();
+
   return (
     <Form className="px-2">
       <Form.Group className="mb-3" controlId="formBasicEmail">

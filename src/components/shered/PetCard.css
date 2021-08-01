@@ -1,0 +1,12 @@
+.pet-status {
+  display: flex;
+  border-radius: 6px;
+  border: rgb(173, 173, 173) solid 1px;
+  text-align: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.card-body-wrapper {
+  background-color: #744fc6;
+}

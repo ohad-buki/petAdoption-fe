@@ -1,28 +1,19 @@
-.suggestion {
-  margin: 30px 5px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
 .body-wrapper {
-  background-color: #88d9e6;
+  background-color: #efeef1;
 }
 
-img {
-  height: 150px;
+.body-wrapper h1 {
+  margin: 25px 0 0 0;
+  padding: 0;
 }
-
 .suggestion-all-pets {
-  border-radius: 6px;
+  color: white;
+  background-color: #198754;
   padding: 10px;
-  font-size: 30px;
-  background-color: #51c2d3;
+  border-radius: 6px;
 }
 
-.suggestion-dog-name {
-  margin-top: 10px;
-  font-size: 30px;
-}
-
-.is-looking {
-  font-size: 15px;
+.suggestion {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin: 25px 10px;
 }

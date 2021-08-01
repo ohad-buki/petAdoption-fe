@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../Logo";
+import Logo from "../shered/Logo";
 import "./header.css";
 
 export default function Header() {

@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { Container } from "react-bootstrap";
-import Logo from "../Logo";
+import Logo from "../shered/Logo";
 
 export default function Footer() {
   return (
