@@ -10,3 +10,9 @@
 .card-body-wrapper {
   background-color: #744fc6;
 }
+
+.pet-edit-btn-wrapper {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}

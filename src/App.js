@@ -19,9 +19,10 @@ function App() {
     profilePic:
       "https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTU0NjQzOTk4OTQ4OTkyMzQy/ansel-elgort-poses-for-a-portrait-during-the-baby-driver-premiere-2017-sxsw-conference-and-festivals-on-march-11-2017-in-austin-texas-photo-by-matt-winkelmeyer_getty-imagesfor-sxsw-square.jpg",
     description: "i like big butts and i can not lie",
+    isAdmin: true,
   });
 
-  console.log(getData("users", "AA0"));
+  // console.log(getData("users", "AA0"));
   return (
     <div className="App">
       <AppContext.Provider

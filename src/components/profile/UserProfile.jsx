@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "./UserProfile.css";
 import ProfilePic from "../shered/ProfilePic";
 import PetCard from "../shered/PetCard";
-import ModalEditProfile from "./ModalEditProfile";
+import ModalEditProfile from "../shered/ModalEditProfile";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import AppContext from "../../context/AppContext";
@@ -36,9 +36,21 @@ export default function UserProfile() {
               </ButtonGroup>
             </div>
             <div className="pets-wrapper d-flex">
-              <PetCard />
-              <PetCard />
-              <PetCard />
+              <PetCard
+                img="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/dog_cool_summer_slideshow/1800x1200_dog_cool_summer_other.jpg"
+                name="yosi"
+                desc="love food"
+              />
+              <PetCard
+                img="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/dog_cool_summer_slideshow/1800x1200_dog_cool_summer_other.jpg"
+                name="yosi"
+                desc="love food"
+              />
+              <PetCard
+                img="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/dog_cool_summer_slideshow/1800x1200_dog_cool_summer_other.jpg"
+                name="yosi"
+                desc="love food"
+              />
             </div>
           </div>
         </div>

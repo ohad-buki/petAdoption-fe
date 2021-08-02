@@ -14,6 +14,7 @@ export default function Footer() {
         <Nav className="me-auto">
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/Profile">Profile</Nav.Link>
+          <Nav.Link href="/search">Search</Nav.Link>
         </Nav>
       </Container>
       <Navbar.Collapse className="justify-content-end">

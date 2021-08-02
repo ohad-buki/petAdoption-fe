@@ -1,42 +1,15 @@
-import React, { useRef } from "react";
+import React from "react";
 import Form from "react-bootstrap/Form";
 
-export default function EditForm({
-  newEmail,
-  setNewEmail,
-  newAge,
-  setNewAge,
-  newName,
-  setNewName,
-  newPass,
-  setNewPass,
-  newDescription,
-  setNewDescription,
-  newImg,
-  setNewImg,
+export default function EditUserForm({
+  profileEditSub,
+  setProfileEditSub,
+  setConfPass,
 }) {
-  // const emailRef = useRef();
-  // const nameRef = useRef();
-  // const passRef = useRef();
-  // const ageRef = useRef();
-  // const descRef = useRef();
-  const confPassRef = useRef();
+  const handleChange = (e) => {
+    setProfileEditSub({ ...profileEditSub, [e.target.name]: e.target.value });
+  };
 
-  const handleEmail = (e) => {
-    setNewEmail(e.target.value);
-  };
-  const handleName = (e) => {
-    setNewName(e.target.value);
-  };
-  const handlePass = (e) => {
-    setNewPass(e.target.value);
-  };
-  const handleAge = (e) => {
-    setNewAge(e.target.value);
-  };
-  const handleDesc = (e) => {
-    setNewDescription(e.target.value);
-  };
   const handleImg = (e) => {};
 
   return (
@@ -46,8 +19,9 @@ export default function EditForm({
         <Form.Control
           type="email"
           placeholder="Enter email"
-          value={newEmail}
-          onChange={handleEmail}
+          // value={newEmail}
+          onChange={handleChange}
+          name="email"
         />
         <Form.Text className="text-muted">
           We'll never share your email with anyone else.
@@ -59,8 +33,9 @@ export default function EditForm({
         <Form.Control
           type="password"
           placeholder="Password"
-          value={newPass}
-          onChange={handlePass}
+          // value={newPass}
+          onChange={handleChange}
+          name="password"
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -68,7 +43,9 @@ export default function EditForm({
         <Form.Control
           type="password"
           placeholder="Confirm Password"
-          ref={confPassRef}
+          onChange={(e) => {
+            setConfPass(e.target.value);
+          }}
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicName">
@@ -76,8 +53,9 @@ export default function EditForm({
         <Form.Control
           type="text"
           placeholder="Full Name"
-          value={newName}
-          onChange={handleName}
+          // value={newName}
+          onChange={handleChange}
+          name="name"
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicAge">
@@ -85,8 +63,9 @@ export default function EditForm({
         <Form.Control
           type="number"
           placeholder="Age"
-          value={newAge}
-          onChange={handleAge}
+          // value={newAge}
+          onChange={handleChange}
+          name="age"
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicAge">
@@ -94,8 +73,9 @@ export default function EditForm({
         <Form.Control
           type="text"
           placeholder="description"
-          value={newDescription}
-          onChange={handleDesc}
+          // value={newDescription}
+          onChange={handleChange}
+          name="description"
         />
       </Form.Group>
       <Form.Group controlId="formFile" className="mb-3" onChange={handleImg}>
