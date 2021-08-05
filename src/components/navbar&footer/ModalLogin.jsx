@@ -7,11 +7,10 @@ import Button from "react-bootstrap/Button";
 export default function ModalComp() {
   const [show, setShow] = useState(false);
   const [signUpState, setSignUpState] = useState(false);
+  const [error, setError] = useState();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const handleSubmit = () => {
-    setShow(false);
-  };
+
   return (
     <>
       <Button variant="outline-success" onClick={handleShow}>
@@ -22,25 +21,21 @@ export default function ModalComp() {
         <Modal.Header closeButton>
           <Modal.Title>{signUpState ? "Sign Up" : "Login"}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{signUpState ? <SignUp /> : <Login />}</Modal.Body>
-        <Modal.Footer className="d-flex justify-content-between">
-          <Button
-            variant="outline-success"
-            onClick={() => {
-              setSignUpState(!signUpState);
-            }}
-          >
-            {signUpState ? "Login" : "Sign Up"}
-          </Button>
-          <div>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="outline-success" onClick={handleSubmit}>
-              Submit
-            </Button>
-          </div>
-        </Modal.Footer>
+        <Modal.Body>
+          {signUpState ? (
+            <SignUp
+              handleClose={handleClose}
+              setSignUpState={setSignUpState}
+              signUpState={signUpState}
+            />
+          ) : (
+            <Login
+              handleClose={handleClose}
+              setSignUpState={setSignUpState}
+              signUpState={signUpState}
+            />
+          )}
+        </Modal.Body>
       </Modal>
     </>
   );
