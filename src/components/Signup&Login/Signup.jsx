@@ -1,25 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useRef } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import SwitchBtn from "./SwitchBtn";
+import AppContext from "../../context/AppContext";
+import Alert from "react-bootstrap/Alert";
 
 export default function SignUp({ handleClose, setSignUpState, signUpState }) {
   const [signUpForm, setSignUpForm] = useState({});
+  const { setCurrentUser } = useContext(AppContext);
+  const confirmPassRef = useRef();
+  const [error, setError] = useState();
   const handleChange = (e) => {
     setSignUpForm({ ...signUpForm, [e.target.name]: e.target.value });
-    console.log("1");
   };
   const handleSubmit = async (e) => {
     console.log(signUpForm);
     e.preventDefault();
-    // axios.post("http://localhost:5000/users/signUp");
-
-    setSignUpForm({});
-    handleClose(false);
+    if (signUpForm.password === confirmPassRef.current.value) {
+      try {
+        const user = await axios.post(
+          "http://localhost:5000/users/signUp",
+          signUpForm
+        );
+        setCurrentUser(user.data);
+        setSignUpForm({});
+        setError();
+        handleClose(false);
+      } catch (e) {
+        setError(e.message);
+      }
+    } else {
+      setError("passwords do not match");
+    }
   };
   return (
-    <Form className="px-2">
+    <Form className="px-2" onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control
@@ -27,6 +43,7 @@ export default function SignUp({ handleClose, setSignUpState, signUpState }) {
           placeholder="Enter email"
           onChange={handleChange}
           required
+          name="email"
         />
         <Form.Text className="text-muted">
           We'll never share your email with anyone else.
@@ -39,6 +56,7 @@ export default function SignUp({ handleClose, setSignUpState, signUpState }) {
           placeholder="Password"
           onChange={handleChange}
           required
+          name="password"
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -46,7 +64,7 @@ export default function SignUp({ handleClose, setSignUpState, signUpState }) {
         <Form.Control
           type="password"
           placeholder="Confirm Password"
-          onChange={handleChange}
+          ref={confirmPassRef}
           required
         />
       </Form.Group>
@@ -57,6 +75,7 @@ export default function SignUp({ handleClose, setSignUpState, signUpState }) {
           placeholder="Full Name"
           onChange={handleChange}
           required
+          name="name"
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicAge">
@@ -65,7 +84,7 @@ export default function SignUp({ handleClose, setSignUpState, signUpState }) {
           type="number"
           placeholder="Age"
           onChange={handleChange}
-          required
+          name="age"
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicAge">
@@ -74,6 +93,7 @@ export default function SignUp({ handleClose, setSignUpState, signUpState }) {
           type="text"
           placeholder="description"
           onChange={handleChange}
+          name="description"
         />
       </Form.Group>
       <Form.Group controlId="formFile" className="mb-3">
@@ -83,6 +103,7 @@ export default function SignUp({ handleClose, setSignUpState, signUpState }) {
       <div className="d-flex justify-content-between">
         <SwitchBtn setSignUpState={setSignUpState} signUpState={signUpState} />
         <div>
+          {error && <Alert variant="danger">{error}</Alert>}
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>

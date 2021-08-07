@@ -1,13 +1,35 @@
-import React from "react";
+import React, { useRef, useState, useContext } from "react";
 import Form from "react-bootstrap/Form";
+import AppContext from "../../context/AppContext";
+import axios from "axios";
+import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 
-export default function EditUserForm({
-  profileEditSub,
-  setProfileEditSub,
-  setConfPass,
-}) {
+export default function EditUserForm({ handleClose }) {
+  const { currentUser, setCurrentUser } = useContext(AppContext);
+  const [profileEditForm, setProfileEditForm] = useState({});
+  const [error, setError] = useState();
+  const confirmPassRef = useRef();
   const handleChange = (e) => {
-    setProfileEditSub({ ...profileEditSub, [e.target.name]: e.target.value });
+    setProfileEditForm({ ...profileEditForm, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    if (profileEditForm.password === confirmPassRef.current.value) {
+      try {
+        const user = await axios.put(
+          `http://localhost:5000/users/edit/${currentUser.email}`,
+          profileEditForm
+        );
+        setCurrentUser(user.data);
+        handleClose();
+        setError();
+      } catch (err) {
+        setError(err.message);
+      }
+    } else {
+      setError("passwords do not match");
+    }
   };
 
   const handleImg = (e) => {};
@@ -19,7 +41,6 @@ export default function EditUserForm({
         <Form.Control
           type="email"
           placeholder="Enter email"
-          // value={newEmail}
           onChange={handleChange}
           name="email"
         />
@@ -33,7 +54,6 @@ export default function EditUserForm({
         <Form.Control
           type="password"
           placeholder="Password"
-          // value={newPass}
           onChange={handleChange}
           name="password"
         />
@@ -43,9 +63,7 @@ export default function EditUserForm({
         <Form.Control
           type="password"
           placeholder="Confirm Password"
-          onChange={(e) => {
-            setConfPass(e.target.value);
-          }}
+          ref={confirmPassRef}
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicName">
@@ -53,7 +71,6 @@ export default function EditUserForm({
         <Form.Control
           type="text"
           placeholder="Full Name"
-          // value={newName}
           onChange={handleChange}
           name="name"
         />
@@ -63,7 +80,6 @@ export default function EditUserForm({
         <Form.Control
           type="number"
           placeholder="Age"
-          // value={newAge}
           onChange={handleChange}
           name="age"
         />
@@ -73,7 +89,6 @@ export default function EditUserForm({
         <Form.Control
           type="text"
           placeholder="description"
-          // value={newDescription}
           onChange={handleChange}
           name="description"
         />
@@ -82,6 +97,17 @@ export default function EditUserForm({
         <Form.Label>Profile Image</Form.Label>
         <Form.Control type="file" />
       </Form.Group>
+      <div>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <div className="d-flex justify-content-end">
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="outline-success" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </div>
+      </div>
     </Form>
   );
 }

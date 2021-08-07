@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import ModalComp from "./ModalLogin";
 import Logo from "../shered/Logo";
+import AppContext from "../../context/AppContext";
+import { Link, NavLink } from "react-router-dom";
 
 export default function NavbarComp() {
+  const { currentUser, setCurrentUser } = useContext(AppContext);
+  const logout = () => {
+    setCurrentUser();
+  };
   return (
     <Navbar bg="light" expand="lg" className="px-2" fixed="top">
       <Navbar.Brand href="#">
@@ -17,15 +23,37 @@ export default function NavbarComp() {
           style={{ maxHeight: "100px" }}
           navbarScroll
         >
-          <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/Profile">Profile</Nav.Link>
-          <Nav.Link href="/search">Search</Nav.Link>
+          <NavLink to="/" className="navLink">
+            Home
+          </NavLink>
+          {currentUser && (
+            <NavLink to="/profile" className="navLink">
+              Profile
+            </NavLink>
+          )}
+          <NavLink to="/search" className="navLink">
+            {currentUser && currentUser.isAdmin ? "Admin/Search" : "Search"}
+          </NavLink>
         </Nav>
       </Navbar.Collapse>
-      <ModalComp />
-      <Navbar.Text>
-        Signed in as: <a href="#login">Mark Otto</a>
-      </Navbar.Text>
+      {!currentUser && <ModalComp />}
+      {currentUser && (
+        <>
+          <Navbar.Text>
+            Signed in as: <Link to="/profile">{currentUser.name}</Link>
+          </Navbar.Text>
+          <div
+            style={{
+              color: "rgb(245, 96, 96)",
+              cursor: "pointer",
+              margin: "0 10px",
+            }}
+            onClick={logout}
+          >
+            Logout
+          </div>
+        </>
+      )}
     </Navbar>
   );
 }

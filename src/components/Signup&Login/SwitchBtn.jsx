@@ -13,7 +13,7 @@ export default function SwitchBtn({ setSignUpState, signUpState }) {
           cursor: "pointer",
         }}
       >
-        {signUpState ? "Sign up" : "Login"}
+        {signUpState ? "Login" : "Sign up"}
       </a>{" "}
     </div>
   );

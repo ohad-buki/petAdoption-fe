@@ -10,7 +10,11 @@ import AppContext from "./context/AppContext";
 import "./App.css";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({ isAdmin: true });
+  const [currentUser, setCurrentUser] = useState();
+
+  useEffect(() => {
+    console.log(currentUser);
+  }, [currentUser]);
 
   return (
     <div className="App">
@@ -23,8 +27,8 @@ function App() {
             <Route exact path="/">
               <Home />
             </Route>
-            <Route exact path="/Profile">
-              <UserProfile />
+            <Route path="/profile">
+              {currentUser ? <UserProfile /> : <Home />}
             </Route>
             <Route path="/search">
               <SearchPage />

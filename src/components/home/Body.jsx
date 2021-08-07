@@ -7,7 +7,7 @@ export default function Body() {
   return (
     <div className="d-flex justify-content-center body-wrapper flex-column">
       <h1>Pets available for adoption</h1>
-      <div className="pets-wrapper d-flex justify-content-center">
+      <div className="pets-wrapper">
         <PetCard
           img="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/dog_cool_summer_slideshow/1800x1200_dog_cool_summer_other.jpg"
           name="yosi"

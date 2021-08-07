@@ -10,7 +10,6 @@ import AddPet from "./AddPet";
 export default function SearchPage() {
   const { currentUser } = useContext(AppContext);
   const [showSearch, setShowSearch] = useState("searchPets");
-
   const handleClick = (e) => {
     setShowSearch(e.target.name);
   };
@@ -18,7 +17,7 @@ export default function SearchPage() {
     <div className="d-flex justify-content-center search-page-wrapper">
       <div className="box-wrapper-search d-flex justify-content-center align-items-start">
         <div className="search-form-wrapper ">
-          {currentUser.isAdmin && (
+          {currentUser && currentUser.isAdmin && (
             <ButtonGroup aria-label="Basic example">
               <Button
                 variant="outline-success"

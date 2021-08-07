@@ -6,3 +6,31 @@
 a {
   text-decoration: none;
 }
+
+.navLink,
+.footerLink {
+  margin: 0 10px;
+  color: rgb(151, 151, 151);
+}
+
+.navLink:hover {
+  color: rgb(36, 36, 36);
+}
+
+.footerLink:hover {
+  color: rgb(206, 206, 206);
+}
+
+.pets-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 950px) {
+  .pets-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+}

@@ -1,26 +1,39 @@
-import React from "react";
+import React, { useContext } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { Container } from "react-bootstrap";
 import Logo from "../shered/Logo";
+import AppContext from "../../context/AppContext";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Footer() {
+  const { currentUser } = useContext(AppContext);
   return (
     <Navbar bg="dark" variant="dark" className="px-2">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand to="#home">
           <Logo />
         </Navbar.Brand>
         <Nav className="me-auto">
-          <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/Profile">Profile</Nav.Link>
-          <Nav.Link href="/search">Search</Nav.Link>
+          <NavLink to="/" className="footerLink">
+            Home
+          </NavLink>
+          {currentUser && (
+            <NavLink to="/profile" className="footerLink">
+              Profile
+            </NavLink>
+          )}
+          <NavLink to="/search" className="footerLink">
+            {currentUser && currentUser.isAdmin ? "Admin/Search" : "Search"}
+          </NavLink>
         </Nav>
       </Container>
       <Navbar.Collapse className="justify-content-end">
-        <Navbar.Text>
-          Signed in as: <a href="#login">Mark Otto</a>
-        </Navbar.Text>
+        {currentUser && (
+          <Navbar.Text>
+            Signed in as: <Link to="/profile">{currentUser.name}</Link>
+          </Navbar.Text>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );

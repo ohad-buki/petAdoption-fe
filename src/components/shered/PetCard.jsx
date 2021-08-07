@@ -6,7 +6,7 @@ import ModalPetEdit from "./ModalPetEdit";
 import AppContext from "../../context/AppContext";
 
 export default function PetCard({ img, name, desc }) {
-  const { currentUser, setCurrentUser } = useContext(AppContext);
+  const { currentUser } = useContext(AppContext);
   return (
     <Card
       style={{
@@ -18,7 +18,7 @@ export default function PetCard({ img, name, desc }) {
     >
       <Card.Img variant="top" src={img} />
       <Card.Body>
-        {currentUser.isAdmin && (
+        {currentUser && currentUser.isAdmin && (
           <div className="pet-edit-btn-wrapper">
             <ModalPetEdit />
           </div>

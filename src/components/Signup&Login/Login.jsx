@@ -4,23 +4,30 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import SwitchBtn from "./SwitchBtn";
 import AppContext from "../../context/AppContext";
+import Alert from "react-bootstrap/Alert";
 
 export default function Login({ handleClose, setSignUpState, signUpState }) {
   const { setCurrentUser } = useContext(AppContext);
   const [loginForm, setLoginForm] = useState({});
+  const [error, setError] = useState();
   const handleChange = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = await axios.post(
-      "http://localhost:5000/users/login",
-      loginForm
-    );
-    setCurrentUser(user.data);
-    setLoginForm({});
-    handleClose(false);
+    try {
+      const user = await axios.post(
+        "http://localhost:5000/users/login",
+        loginForm
+      );
+      setCurrentUser(user.data);
+      console.log(user.data);
+      setLoginForm({});
+      handleClose(false);
+    } catch (err) {
+      setError(err.message);
+    }
   };
   return (
     <Form className="px-2" onSubmit={handleSubmit}>
@@ -50,6 +57,7 @@ export default function Login({ handleClose, setSignUpState, signUpState }) {
       <div className="d-flex justify-content-between">
         <SwitchBtn setSignUpState={setSignUpState} signUpState={signUpState} />
         <div>
+          {error && <Alert variant="danger">{error}</Alert>}
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
