@@ -1,24 +1,30 @@
 import React, { useRef, useState, useContext } from "react";
+import firebaseApp, { uploadAndGetImg, storage } from "../../firebase";
 import Form from "react-bootstrap/Form";
 import AppContext from "../../context/AppContext";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import { ref } from "firebase/storage";
+import LoadSpinner from "../shered/LoadSpinner";
 
 export default function EditUserForm({ handleClose }) {
   const { currentUser, setCurrentUser } = useContext(AppContext);
   const [profileEditForm, setProfileEditForm] = useState({});
   const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const confirmPassRef = useRef();
   const handleChange = (e) => {
     setProfileEditForm({ ...profileEditForm, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (profileEditForm.password === confirmPassRef.current.value) {
       try {
+        console.log(profileEditForm);
         const user = await axios.put(
-          `http://localhost:5000/users/edit/${currentUser.email}`,
+          `http://localhost:5000/users/edit/${currentUser.user_id}`,
           profileEditForm
         );
         setCurrentUser(user.data);
@@ -32,10 +38,19 @@ export default function EditUserForm({ handleClose }) {
     }
   };
 
-  const handleImg = (e) => {};
+  const handleImg = (e) => {
+    setIsLoading(true);
+    const file = e.target.files[0];
+    const profileImgRef = ref(storage, `userImg/${file.name}`);
+    uploadAndGetImg(profileImgRef, file).then((url) => {
+      console.log(url);
+      setProfileEditForm({ ...profileEditForm, photo_url: url });
+      setIsLoading(false);
+    });
+  };
 
   return (
-    <Form className="px-2">
+    <Form className="px-2" onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control
@@ -103,9 +118,13 @@ export default function EditUserForm({ handleClose }) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="outline-success" onClick={handleSubmit}>
-            Submit
-          </Button>
+          {isLoading ? (
+            <LoadSpinner />
+          ) : (
+            <Button variant="outline-success" type="submit">
+              Submit
+            </Button>
+          )}
         </div>
       </div>
     </Form>

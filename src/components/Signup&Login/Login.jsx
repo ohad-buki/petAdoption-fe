@@ -10,6 +10,7 @@ export default function Login({ handleClose, setSignUpState, signUpState }) {
   const { setCurrentUser } = useContext(AppContext);
   const [loginForm, setLoginForm] = useState({});
   const [error, setError] = useState();
+
   const handleChange = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
   };
@@ -21,14 +22,14 @@ export default function Login({ handleClose, setSignUpState, signUpState }) {
         "http://localhost:5000/users/login",
         loginForm
       );
-      setCurrentUser(user.data);
-      console.log(user.data);
+      setCurrentUser(user.data[0]);
       setLoginForm({});
       handleClose(false);
     } catch (err) {
       setError(err.message);
     }
   };
+
   return (
     <Form className="px-2" onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">

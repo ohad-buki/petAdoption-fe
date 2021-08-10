@@ -17,7 +17,7 @@ export default function SearchPage() {
     <div className="d-flex justify-content-center search-page-wrapper">
       <div className="box-wrapper-search d-flex justify-content-center align-items-start">
         <div className="search-form-wrapper ">
-          {currentUser && currentUser.isAdmin && (
+          {currentUser && currentUser.is_admin ? (
             <ButtonGroup aria-label="Basic example">
               <Button
                 variant="outline-success"
@@ -44,6 +44,8 @@ export default function SearchPage() {
                 Add Pet
               </Button>
             </ButtonGroup>
+          ) : (
+            ""
           )}
           {showSearch === "searchPets" && (
             <>

@@ -24,7 +24,7 @@ export default function Footer() {
             </NavLink>
           )}
           <NavLink to="/search" className="footerLink">
-            {currentUser && currentUser.isAdmin ? "Admin/Search" : "Search"}
+            {currentUser && currentUser.is_admin ? "Admin/Search" : "Search"}
           </NavLink>
         </Nav>
       </Container>

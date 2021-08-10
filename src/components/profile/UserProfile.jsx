@@ -9,11 +9,12 @@ import AppContext from "../../context/AppContext";
 
 export default function UserProfile() {
   const { currentUser } = useContext(AppContext);
+  console.log(currentUser);
   return (
     <div className="profile-wrapper d-flex justify-content-center">
       <div className="box-wrapper">
         <div className="img-wrapper">
-          <ProfilePic url={currentUser.photoURL} />
+          <ProfilePic url={currentUser.photo_url} />
         </div>
         <div className="edit-profile-btn-wrapper">
           <ModalEditProfile />

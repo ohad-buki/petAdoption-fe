@@ -32,7 +32,7 @@ export default function NavbarComp() {
             </NavLink>
           )}
           <NavLink to="/search" className="navLink">
-            {currentUser && currentUser.isAdmin ? "Admin/Search" : "Search"}
+            {currentUser && currentUser.is_admin ? "Admin/Search" : "Search"}
           </NavLink>
         </Nav>
       </Navbar.Collapse>

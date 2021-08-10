@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavbarComp from "./components/navbar&footer/Navbar";
 import Home from "./components/home/Home";
@@ -11,10 +16,6 @@ import "./App.css";
 
 function App() {
   const [currentUser, setCurrentUser] = useState();
-
-  useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
 
   return (
     <div className="App">
@@ -28,7 +29,7 @@ function App() {
               <Home />
             </Route>
             <Route path="/profile">
-              {currentUser ? <UserProfile /> : <Home />}
+              {currentUser ? <UserProfile /> : <Redirect to="/" />}
             </Route>
             <Route path="/search">
               <SearchPage />
