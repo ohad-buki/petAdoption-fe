@@ -27,7 +27,7 @@ export default function EditUserForm({ handleClose }) {
           `http://localhost:5000/users/edit/${currentUser.user_id}`,
           profileEditForm
         );
-        setCurrentUser(user.data);
+        setCurrentUser(user.data[0]);
         handleClose();
         setError();
       } catch (err) {

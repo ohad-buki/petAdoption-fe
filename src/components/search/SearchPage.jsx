@@ -10,6 +10,7 @@ import AddPet from "./AddPet";
 export default function SearchPage() {
   const { currentUser } = useContext(AppContext);
   const [showSearch, setShowSearch] = useState("searchPets");
+  const [searchResult, setSearchResult] = useState();
   const handleClick = (e) => {
     setShowSearch(e.target.name);
   };
@@ -50,13 +51,13 @@ export default function SearchPage() {
           {showSearch === "searchPets" && (
             <>
               <h1 className="search-form-header">Search pets</h1>
-              <SearchPetsForm />
+              <SearchPetsForm setSearchResult={setSearchResult} />
             </>
           )}
           {showSearch === "searchUsers" && (
             <>
               <h1 className="search-form-header">Search users</h1>
-              <SearchUsersForm />
+              <SearchUsersForm setSearchResult={setSearchResult} />
             </>
           )}
           {showSearch === "addPet" && (
@@ -65,6 +66,12 @@ export default function SearchPage() {
               <AddPet />
             </>
           )}
+          <div className="mt-5">
+            {searchResult &&
+              searchResult.map((item) => {
+                return <h1>{item.name}</h1>;
+              })}
+          </div>
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import { ref } from "firebase/storage";
 import { uploadAndGetImg, storage } from "../../firebase";
 import LoadSpinner from "../shered/LoadSpinner";
+import axios from "axios";
 
 export default function AddPet() {
   const [addPetForm, setAddPetForm] = useState({});
@@ -12,26 +13,39 @@ export default function AddPet() {
 
   const handleChange = (e) => {
     if (e.target.name === "hypoallergenic") {
-      console.log(e.target.checked);
       setAddPetForm({ ...addPetForm, [e.target.name]: e.target.checked });
     } else {
       setAddPetForm({ ...addPetForm, [e.target.name]: e.target.value });
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(addPetForm);
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/pets/addPet",
+        addPetForm
+      );
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleImg = (e) => {
-    setIsLoading(true);
-    const file = e.target.files[0];
-    const petImgRef = ref(storage, `petImg/${file.name}`);
-    uploadAndGetImg(petImgRef, file).then((url) => {
-      console.log(url);
-      setAddPetForm({ ...addPetForm, photo_url: url });
-      setIsLoading(false);
-    });
+    if (e.target.files[0]) {
+      setIsLoading(true);
+      const file = e.target.files[0];
+      const petImgRef = ref(storage, `petImg/${file.name}`);
+      uploadAndGetImg(petImgRef, file).then((url) => {
+        console.log(url);
+        setAddPetForm({ ...addPetForm, photo_url: url });
+        setIsLoading(false);
+      });
+    } else {
+      setAddPetForm({ ...addPetForm, photo_url: undefined });
+    }
   };
 
   return (
@@ -92,7 +106,7 @@ export default function AddPet() {
       <Form.Group controlId="formGriddietary restrictions">
         <Form.Label>Dietary restrictions</Form.Label>
         <Form.Control
-          placeholder="dietary_restrictions"
+          placeholder="Dietary restrictions"
           name="dietary_restrictions"
           onChange={handleChange}
         />

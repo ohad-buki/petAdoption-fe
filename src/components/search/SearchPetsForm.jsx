@@ -2,14 +2,28 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import { browserHistory } from "react-router";
 
-export default function SearchPetsForm() {
+export default function SearchPetsForm({ setSearchResult }) {
   const [advenced, setAdvenced] = useState(false);
   const [searchForm, setSearchForm] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const pets = await axios.get("http://localhost:5000/pets");
+    let query = "/?";
+    const formArr = Object.entries(searchForm);
+    if (formArr.length) {
+      formArr.forEach(([key, value], i) => {
+        if (i === 0) {
+          query += `${key}=${value}`;
+        } else {
+          query += `&${key}=${value}`;
+        }
+      });
+    }
+    const pets = await axios.get(`http://localhost:5000/pets${query}`);
+    console.log(pets);
+    setSearchResult(pets.data);
   };
   const handleChange = (e) => {
     setSearchForm({ ...searchForm, [e.target.name]: e.target.value });
