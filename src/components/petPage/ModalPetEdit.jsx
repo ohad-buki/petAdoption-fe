@@ -2,9 +2,8 @@ import React, { useState, useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import EditPetForm from "./EditPetForm";
-import AppContext from "../../context/AppContext";
 
-export default function ModalPetEdit() {
+export default function ModalPetEdit({ pet }) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -22,7 +21,7 @@ export default function ModalPetEdit() {
           <Modal.Title>Edit Profile</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EditPetForm />
+          <EditPetForm petId={pet} />
         </Modal.Body>
         <Modal.Footer>
           <div>

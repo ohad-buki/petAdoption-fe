@@ -4,11 +4,21 @@
   background-color: #198754;
 }
 .search-form-wrapper {
-  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 75%;
   margin: 30px 0;
+}
+.search-form {
+  width: 40%;
 }
 
 .box-wrapper-search {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
   background-color: #c6ebbe;
   width: 90%;
   border-radius: 6px;
@@ -24,4 +34,25 @@
 .search-btn {
   color: white;
   background-color: rgb(37, 37, 37);
+}
+
+.search-results {
+  display: flex;
+  flex-flow: wrap row;
+  justify-content: center;
+  width: 100%;
+}
+
+.users-list {
+  margin-top: 15px;
+  width: 80%;
+  list-style-type: none;
+}
+
+.user-row {
+  display: flex;
+  flex-flow: wrap row;
+  align-items: center;
+  justify-content: space-around;
+  border-top: solid 1px gray;
 }

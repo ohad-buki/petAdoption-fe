@@ -13,6 +13,7 @@ import Footer from "./components/navbar&footer/Footer";
 import SearchPage from "./components/search/SearchPage";
 import AppContext from "./context/AppContext";
 import "./App.css";
+import PetPage from "./components/petPage/PetPage";
 
 function App() {
   const [currentUser, setCurrentUser] = useState();
@@ -33,6 +34,9 @@ function App() {
             </Route>
             <Route path="/search">
               <SearchPage />
+            </Route>
+            <Route path="/petPage/:id">
+              <PetPage />
             </Route>
           </Switch>
           <Footer />

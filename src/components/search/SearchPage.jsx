@@ -10,14 +10,14 @@ import AddPet from "./AddPet";
 export default function SearchPage() {
   const { currentUser } = useContext(AppContext);
   const [showSearch, setShowSearch] = useState("searchPets");
-  const [searchResult, setSearchResult] = useState();
+
   const handleClick = (e) => {
     setShowSearch(e.target.name);
   };
   return (
     <div className="d-flex justify-content-center search-page-wrapper">
       <div className="box-wrapper-search d-flex justify-content-center align-items-start">
-        <div className="search-form-wrapper ">
+        <div className="search-form-wrapper">
           {currentUser && currentUser.is_admin ? (
             <ButtonGroup aria-label="Basic example">
               <Button
@@ -51,13 +51,13 @@ export default function SearchPage() {
           {showSearch === "searchPets" && (
             <>
               <h1 className="search-form-header">Search pets</h1>
-              <SearchPetsForm setSearchResult={setSearchResult} />
+              <SearchPetsForm setPetsList />
             </>
           )}
           {showSearch === "searchUsers" && (
             <>
               <h1 className="search-form-header">Search users</h1>
-              <SearchUsersForm setSearchResult={setSearchResult} />
+              <SearchUsersForm />
             </>
           )}
           {showSearch === "addPet" && (
@@ -66,12 +66,6 @@ export default function SearchPage() {
               <AddPet />
             </>
           )}
-          <div className="mt-5">
-            {searchResult &&
-              searchResult.map((item) => {
-                return <h1>{item.name}</h1>;
-              })}
-          </div>
         </div>
       </div>
     </div>

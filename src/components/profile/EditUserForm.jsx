@@ -14,6 +14,7 @@ export default function EditUserForm({ handleClose }) {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const confirmPassRef = useRef();
+
   const handleChange = (e) => {
     setProfileEditForm({ ...profileEditForm, [e.target.name]: e.target.value });
   };

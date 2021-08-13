@@ -1,26 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
+
 export default function SearchUsersForm() {
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [searchForm, setSearchForm] = useState({});
+  const [userList, setUserList] = useState();
+
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    let query = "/?";
+    const formArr = Object.entries(searchForm);
+    if (formArr.length) {
+      formArr.forEach(([key, value], i) => {
+        if (i === 0) {
+          query += `${key}=${value}`;
+        } else {
+          query += `&${key}=${value}`;
+        }
+      });
+    }
+    try {
+      const users = await axios.get(`http://localhost:5000/users${query}`);
+      setUserList(users.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+  const handleChange = (e) => {
+    setSearchForm({ ...searchForm, [e.target.name]: e.target.value });
+  };
+
+  const makeAdmin = async (e, isAdmin) => {
+    try {
+      const user = await axios.put(
+        `http://localhost:5000/users/edit/${e.target.name}`,
+        { is_admin: !isAdmin }
+      );
+      handleSubmit();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <Form className="px-2" onSubmit={handleSubmit}>
-      <Form.Group controlId="formGridEmail">
-        <Form.Label>Email</Form.Label>
-        <Form.Control type="email" placeholder="User email" />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formGridAddress2">
-        <Form.Label>User name</Form.Label>
-        <Form.Control type="text" placeholder="User Name" />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Search
-      </Button>
-      {/* <Button variant="primary" onClick={getAllUsers}>
+    <>
+      <Form className="px-2" onSubmit={handleSubmit}>
+        <Form.Group controlId="formGridEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="email"
+            name="email"
+            placeholder="email"
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formGridAddress2">
+          <Form.Label>User name</Form.Label>
+          <Form.Control
+            type="text"
+            name="name"
+            placeholder="name"
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Search
+        </Button>
+        {/* <Button variant="primary" onClick={getAllUsers}>
         All Users
       </Button> */}
-    </Form>
+      </Form>
+      {userList && (
+        <ul className="users-list">
+          {userList.map((user) => {
+            return (
+              <li key={user.user_id} className="user-row">
+                <div>{user.name}</div>
+                <div>{user.email}</div>
+                <Button
+                  onClick={(e) => {
+                    makeAdmin(e, user.is_admin);
+                  }}
+                  name={user.user_id}
+                >
+                  {user.is_admin ? "unAdmin" : "Make Admin"}
+                </Button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </>
   );
 }
