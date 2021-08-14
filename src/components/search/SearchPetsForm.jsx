@@ -7,23 +7,28 @@ import PetCard from "../shered/PetCard.jsx";
 export default function SearchPetsForm() {
   const [advenced, setAdvenced] = useState(false);
   const [searchForm, setSearchForm] = useState({});
-  const [petList, setPetList] = useState();
+  const [petList, setPetList] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     let query = "/?";
     const formArr = Object.entries(searchForm);
-    if (formArr.length) {
-      formArr.forEach(([key, value], i) => {
-        if (i === 0) {
-          query += `${key}=${value}`;
-        } else {
-          query += `&${key}=${value}`;
-        }
-      });
+    try {
+      if (formArr.length) {
+        formArr.forEach(([key, value], i) => {
+          if (i === 0) {
+            query += `${key}=${value}`;
+          } else {
+            query += `&${key}=${value}`;
+          }
+        });
+      }
+      const pets = await axios.get(`http://localhost:5000/pets${query}`);
+      console.log(pets);
+      setPetList(pets.data);
+    } catch (e) {
+      console.log(e);
     }
-    const pets = await axios.get(`http://localhost:5000/pets${query}`);
-    setPetList(pets.data);
   };
 
   const handleChange = (e) => {
@@ -127,6 +132,7 @@ export default function SearchPetsForm() {
       </Form>
       <div className="search-results">
         {petList &&
+          petList.length > 0 &&
           petList.map((pet) => {
             return (
               <PetCard
@@ -135,6 +141,7 @@ export default function SearchPetsForm() {
                 name={pet.name}
                 type={pet.type}
                 status={pet.status}
+                pet_id={pet.pet_id}
               />
             );
           })}

@@ -19,6 +19,7 @@ export default function SignUp({ handleClose, setSignUpState, signUpState }) {
   const handleChange = (e) => {
     setSignUpForm({ ...signUpForm, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (e) => {
     console.log(signUpForm);
     e.preventDefault();

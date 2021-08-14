@@ -5,17 +5,17 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import AppContext from "../../context/AppContext";
 import axios from "axios";
 import ModalPetEdit from "./ModalPetEdit";
+import "./petPage.css";
 
 export default function PetPage() {
   const { currentUser } = useContext(AppContext);
   const [currentPet, setCurrentPet] = useState();
+  const { id } = useParams();
 
   useEffect(async () => {
-    const { petId } = useParams();
+    console.log(id);
     try {
-      const pet = await axios.get(
-        `http://localhost:5000/pets/?pet_id=${petId}`
-      );
+      const pet = await axios.get(`http://localhost:5000/pets/?pet_id=${id}`);
       setCurrentPet(pet.data[0]);
     } catch (e) {
       console.log(e);
@@ -28,10 +28,10 @@ export default function PetPage() {
         `http://localhost:5000/pets/edit/${currentPet.pet_id}`,
         {
           status: e.target.name,
-          user_id: e.target.name === "avilible" ? 0 : currentUser.user_id,
+          user_id: e.target.name === "available" ? 0 : currentUser.user_id,
         }
       );
-      setCurrentPet(pet);
+      setCurrentPet(pet.data[0]);
     } catch (error) {
       console.log(error);
     }
@@ -41,52 +41,56 @@ export default function PetPage() {
     <>
       {currentPet && (
         <div className="profile-wrapper d-flex justify-content-center">
-          <div className="box-wrapper pet-profile">
-            <div className="petImage">
+          <div className="box-wrapper pet-profile d-flex flex-row">
+            <div className="pet-image">
               <img src={currentPet.photo_url} />
             </div>
             <div className="pet-info">
-              <div className="info-line pet-name">
+              <div className="info-line pet-name d-flex flex-row">
                 <h4>Name</h4>
-                <h4>{currentPet.photo_url}</h4>
+                <h4>{currentPet.name}</h4>
               </div>
-              <div className="info-line">
+              <div className="info-line d-flex flex-row">
                 <h4>Type</h4>
                 <h4>{currentPet.type}</h4>
               </div>
-              <div className="info-line">
+              <div className="info-line d-flex flex-row">
                 <h4>Age</h4>
                 <h4>{currentPet.age}</h4>
               </div>
-              <div className="info-line">
+              <div className="info-line d-flex flex-row">
                 <h4>Height</h4>
-                <h4>{currentPet.height}</h4>
+                <h4>{currentPet.height}cm</h4>
               </div>
-              <div className="info-line">
+              <div className="info-line d-flex flex-row">
                 <h4>Weight</h4>
-                <h4>{currentPet.weight}</h4>
+                <h4>{currentPet.weight}kg</h4>
               </div>
-              <div className="info-line">
+              <div className="info-line d-flex flex-row">
                 <h4>Color</h4>
                 <h4>{currentPet.color}</h4>
               </div>
-              <div className="info-line">
+              <div className="info-line d-flex flex-row">
                 <h4>Dietary restrictions</h4>
                 <h4>{currentPet.dietary_restrictions}</h4>
               </div>
-              <div className="info-line">
+              <div className="info-line d-flex flex-row">
                 <h4>Hypoallergenic</h4>
-                <h4>{currentPet.hypoallergenic}</h4>
+                <h4>{currentPet.hypoallergenic ? "yes" : "no"}</h4>
               </div>
-              <div className="info-line">
+              <div className="info-line d-flex flex-row">
                 <h4>Status</h4>
                 <h4>{currentPet.status}</h4>
               </div>
-              <div className="btn-group-wrapper"></div>
-              <ButtonGroup aria-label="Basic example">
-                {currentUser.is_admin && <ModalPetEdit pet={currentPet} />}
-                {currentPet.status === "avilible" && (
-                  <>
+              <div className="btn-group-wrapper">
+                <ButtonGroup aria-label="Basic example">
+                  {currentUser.is_admin && (
+                    <ModalPetEdit
+                      pet={currentPet}
+                      setCurrentPet={setCurrentPet}
+                    />
+                  )}
+                  {currentPet.status === "available" && (
                     <Button
                       variant="outline-success"
                       name="adopted"
@@ -95,17 +99,20 @@ export default function PetPage() {
                     >
                       Adopt
                     </Button>
-                    {currentUser.user_id === currentPet.user_id &&
-                    currentPet.status === "fosterd" ? (
-                      <Button
-                        variant="outline-success"
-                        name="avilible"
-                        className="search-btn"
-                        onClick={handleClick}
-                      >
-                        Return Pet
-                      </Button>
-                    ) : (
+                  )}
+
+                  {currentUser.user_id === currentPet.user_id &&
+                  currentPet.status === "fosterd" ? (
+                    <Button
+                      variant="outline-success"
+                      name="available"
+                      className="search-btn"
+                      onClick={handleClick}
+                    >
+                      Return Pet
+                    </Button>
+                  ) : (
+                    currentPet.status === "available" && (
                       <Button
                         variant="outline-success"
                         name="fosterd"
@@ -114,10 +121,10 @@ export default function PetPage() {
                       >
                         Foster Pet
                       </Button>
-                    )}
-                  </>
-                )}
-              </ButtonGroup>
+                    )
+                  )}
+                </ButtonGroup>
+              </div>
             </div>
           </div>
         </div>

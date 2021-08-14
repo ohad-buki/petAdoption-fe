@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./UserProfile.css";
 import ProfilePic from "../shered/ProfilePic";
 import PetCard from "../shered/PetCard";
@@ -6,10 +6,40 @@ import ModalEditProfile from "./ModalEditProfile";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import AppContext from "../../context/AppContext";
+import axios from "axios";
 
 export default function UserProfile() {
   const { currentUser } = useContext(AppContext);
-  console.log(currentUser);
+  const [petList, setPetList] = useState([]);
+  const [renderdList, setRenderdList] = useState([]);
+  const [filterBy, setFilterBy] = useState();
+
+  useEffect(async () => {
+    try {
+      const pets = await axios.get(
+        `http://localhost:5000/pets/?user_id=${currentUser.user_id}`
+      );
+      setPetList(pets.data);
+      setRenderdList(pets.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  const handleFilter = (e) => {
+    setFilterBy(e.target.name);
+  };
+
+  useEffect(() => {
+    console.log(filterBy);
+    if (filterBy) {
+      const filterdList = petList.filter((pet) => {
+        return pet.status === filterBy;
+      });
+      setRenderdList(filterdList);
+    }
+  }, [filterBy]);
+
   return (
     <div className="profile-wrapper d-flex justify-content-center">
       <div className="box-wrapper">
@@ -25,10 +55,20 @@ export default function UserProfile() {
           <div className="my-fav-pets d-flex flex-column justify-content-center">
             <div className="btns-wrapper mt-4">
               <ButtonGroup aria-label="Basic example">
-                <Button variant="outline-success" className="search-btn">
+                <Button
+                  variant="outline-success"
+                  className="search-btn"
+                  name="adopted"
+                  onClick={handleFilter}
+                >
                   Adopted
                 </Button>
-                <Button variant="outline-success" className="search-btn">
+                <Button
+                  variant="outline-success"
+                  className="search-btn"
+                  name="fosterd"
+                  onClick={handleFilter}
+                >
                   Fosterd
                 </Button>
                 <Button variant="outline-success" className="search-btn">
@@ -37,21 +77,21 @@ export default function UserProfile() {
               </ButtonGroup>
             </div>
             <div className="pets-wrapper">
-              <PetCard
-                img="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/dog_cool_summer_slideshow/1800x1200_dog_cool_summer_other.jpg"
-                name="yosi"
-                desc="love food"
-              />
-              <PetCard
-                img="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/dog_cool_summer_slideshow/1800x1200_dog_cool_summer_other.jpg"
-                name="yosi"
-                desc="love food"
-              />
-              <PetCard
-                img="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/dog_cool_summer_slideshow/1800x1200_dog_cool_summer_other.jpg"
-                name="yosi"
-                desc="love food"
-              />
+              {(renderdList &&
+                renderdList.length > 0 &&
+                renderdList.map((pet) => {
+                  return (
+                    <PetCard
+                      key={pet.pet_id}
+                      img={pet.photo_url}
+                      name={pet.name}
+                      type={pet.type}
+                      status={pet.status}
+                      pet_id={pet.pet_id}
+                    />
+                  );
+                })) ||
+                "No pets yet ;)"}
             </div>
           </div>
         </div>

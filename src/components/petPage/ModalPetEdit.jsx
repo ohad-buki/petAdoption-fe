@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import EditPetForm from "./EditPetForm";
 
-export default function ModalPetEdit({ pet }) {
+export default function ModalPetEdit({ pet, setCurrentPet }) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -21,18 +21,12 @@ export default function ModalPetEdit({ pet }) {
           <Modal.Title>Edit Profile</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EditPetForm petId={pet} />
+          <EditPetForm
+            pet={pet}
+            handleClose={handleClose}
+            setCurrentPet={setCurrentPet}
+          />
         </Modal.Body>
-        <Modal.Footer>
-          <div>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="outline-success" onClick={handleClose}>
-              Submit
-            </Button>
-          </div>
-        </Modal.Footer>
       </Modal>
     </>
   );

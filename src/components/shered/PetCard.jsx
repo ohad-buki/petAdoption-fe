@@ -26,9 +26,12 @@ export default function PetCard({ img, name, type, status, pet_id }) {
         )}
         <Card.Title>{name}</Card.Title>
         <Card.Text>{type}</Card.Text>
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-between align-items-center">
           <div className="pet-status">{status}</div>
-          <Link to={`/petPage/${pet_id}`}>See more</Link>
+          <Link to={`/petPage/${pet_id}`}>
+            {" "}
+            <Button variant="success">See more</Button>
+          </Link>
         </div>
       </Card.Body>
     </Card>

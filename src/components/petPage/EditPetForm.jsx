@@ -1,12 +1,16 @@
-import React, { useRef, useContext, useState } from "react";
+import React, { useState } from "react";
+import firebaseApp, { uploadAndGetImg, storage } from "../../firebase";
 import Form from "react-bootstrap/Form";
+import axios from "axios";
+import Button from "react-bootstrap/Button";
+import { ref } from "firebase/storage";
+import LoadSpinner from "../shered/LoadSpinner";
 
-export default function EditPetForm({ pet_id, weight, height, name }) {
-  const { currentUser, setCurrentUser } = useContext(AppContext);
+export default function EditPetForm({ pet, handleClose, setCurrentPet }) {
+  const { pet_id } = pet;
   const [petEditForm, setPetEditForm] = useState({});
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const confirmPassRef = useRef();
 
   const handleChange = (e) => {
     setPetEditForm({ ...petEditForm, [e.target.name]: e.target.value });
@@ -19,7 +23,7 @@ export default function EditPetForm({ pet_id, weight, height, name }) {
         `http://localhost:5000/pets/edit/${pet_id}`,
         petEditForm
       );
-      setCurrentUser(pet.data[0]);
+      setCurrentPet(pet.data[0]);
       handleClose();
       setError();
     } catch (err) {
@@ -32,45 +36,97 @@ export default function EditPetForm({ pet_id, weight, height, name }) {
     const file = e.target.files[0];
     const profileImgRef = ref(storage, `userImg/${file.name}`);
     uploadAndGetImg(profileImgRef, file).then((url) => {
-      console.log(url);
-      setProfileEditForm({ ...profileEditForm, photo_url: url });
+      setPetEditForm({ ...petEditForm, photo_url: url });
       setIsLoading(false);
     });
   };
 
   return (
-    <Form className="px-2">
-      <Form.Group className="mb-3" controlId="formBasicName">
+    <Form className="px-2" onSubmit={handleSubmit}>
+      <Form.Group className="mb-3">
+        <Form.Select
+          aria-label="Default select example"
+          name="type"
+          onChange={handleChange}
+        >
+          <option value="0">Type</option>
+          <option value="dog">dog</option>
+          <option value="cat">cat</option>
+        </Form.Select>
+      </Form.Group>
+      <Form.Group controlId="formGridPetName">
         <Form.Label>Name</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Full Name"
-          //   value={newName}
-          //   onChange={handleName}
+          placeholder="Enter Name"
+          name="name"
+          onChange={handleChange}
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicAge">
+      <Form.Group controlId="formGridAge">
         <Form.Label>Age</Form.Label>
         <Form.Control
           type="number"
           placeholder="Age"
-          //   value={newAge}
-          //   onChange={handleAge}
+          name="age"
+          onChange={handleChange}
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicAge">
-        <Form.Label>About Me</Form.Label>
+      <Form.Group className="mb-3" controlId="formGridHeight">
+        <Form.Label>Height</Form.Label>
         <Form.Control
-          type="text"
-          placeholder="description"
-          //   value={newDescription}
-          //   onChange={handleDesc}
+          placeholder="Height"
+          name="height"
+          onChange={handleChange}
         />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formGridAdoptionWeight">
+        <Form.Label>Weight</Form.Label>
+        <Form.Control
+          placeholder="Weight"
+          name="weight"
+          onChange={handleChange}
+        />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formGridAdoptionColor">
+        <Form.Label>Color</Form.Label>
+        <Form.Control
+          placeholder="Color"
+          name="color"
+          onChange={handleChange}
+        />
+      </Form.Group>
+      <Form.Group controlId="formGriddietary restrictions">
+        <Form.Label>Dietary restrictions</Form.Label>
+        <Form.Control
+          placeholder="Dietary restrictions"
+          name="dietary_restrictions"
+          onChange={handleChange}
+        />
+      </Form.Group>
+      <Form.Group className="mb-3" id="formGridCheckbox">
+        <div className="d-flex justify-content-center">
+          <Form.Check
+            type="checkbox"
+            label="Hypoallergenic"
+            name="hypoallergenic"
+            onChange={handleChange}
+          />
+        </div>
       </Form.Group>
       <Form.Group controlId="formFile" className="mb-3">
         <Form.Label>Profile Image</Form.Label>
-        <Form.Control type="file" />
+        <Form.Control type="file" onChange={handleImg} />
       </Form.Group>
+      <div className="d-flex justify-content-end">
+        {isLoading ? (
+          <LoadSpinner />
+        ) : (
+          <Button variant="success" type="submit">
+            Submit
+          </Button>
+        )}
+      </div>
     </Form>
   );
 }
