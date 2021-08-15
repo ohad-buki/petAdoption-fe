@@ -83,47 +83,49 @@ export default function PetPage() {
                 <h4>{currentPet.status}</h4>
               </div>
               <div className="btn-group-wrapper">
-                <ButtonGroup aria-label="Basic example">
-                  {currentUser.is_admin && (
-                    <ModalPetEdit
-                      pet={currentPet}
-                      setCurrentPet={setCurrentPet}
-                    />
-                  )}
-                  {currentPet.status === "available" && (
-                    <Button
-                      variant="outline-success"
-                      name="adopted"
-                      className="search-btn"
-                      onClick={handleClick}
-                    >
-                      Adopt
-                    </Button>
-                  )}
-
-                  {currentUser.user_id === currentPet.user_id &&
-                  currentPet.status === "fosterd" ? (
-                    <Button
-                      variant="outline-success"
-                      name="available"
-                      className="search-btn"
-                      onClick={handleClick}
-                    >
-                      Return Pet
-                    </Button>
-                  ) : (
-                    currentPet.status === "available" && (
+                {currentUser && (
+                  <ButtonGroup aria-label="Basic example">
+                    {currentUser.is_admin && (
+                      <ModalPetEdit
+                        pet={currentPet}
+                        setCurrentPet={setCurrentPet}
+                      />
+                    )}
+                    {currentPet.status === "available" && (
                       <Button
                         variant="outline-success"
-                        name="fosterd"
+                        name="adopted"
                         className="search-btn"
                         onClick={handleClick}
                       >
-                        Foster Pet
+                        Adopt
                       </Button>
-                    )
-                  )}
-                </ButtonGroup>
+                    )}
+
+                    {currentUser.user_id === currentPet.user_id &&
+                    currentPet.status === "fosterd" ? (
+                      <Button
+                        variant="outline-success"
+                        name="available"
+                        className="search-btn"
+                        onClick={handleClick}
+                      >
+                        Return Pet
+                      </Button>
+                    ) : (
+                      currentPet.status === "available" && (
+                        <Button
+                          variant="outline-success"
+                          name="fosterd"
+                          className="search-btn"
+                          onClick={handleClick}
+                        >
+                          Foster Pet
+                        </Button>
+                      )
+                    )}
+                  </ButtonGroup>
+                )}
               </div>
             </div>
           </div>

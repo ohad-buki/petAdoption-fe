@@ -18,7 +18,8 @@ export default function PetCard({ img, name, type, status, pet_id }) {
       const likeStatus = await axios.get(
         `http://localhost:5000/likes/specific/${currentUser.user_id}/${pet_id}`
       );
-      if (likeStatus.length > 0) {
+      console.log(likeStatus);
+      if (likeStatus.data.length > 0) {
         setIsLiked(true);
       }
       setUsersLike(users.data);
@@ -30,16 +31,19 @@ export default function PetCard({ img, name, type, status, pet_id }) {
   const handleLike = async () => {
     try {
       let res;
+      console.log(isLiked);
       if (isLiked === true) {
-        res = await axios.delete(`http://localhost:5000/`, {
+        res = await axios.put(`http://localhost:5000/likes`, {
           user_id: currentUser.user_id,
           pet_id: pet_id,
         });
+        setIsLiked(false);
       } else {
         res = await axios.post(`http://localhost:5000/likes`, {
           user_id: currentUser.user_id,
           pet_id: pet_id,
         });
+        setIsLiked(true);
       }
       console.log(res);
     } catch (e) {
@@ -59,7 +63,7 @@ export default function PetCard({ img, name, type, status, pet_id }) {
       <Card.Body>
         {currentUser && (
           <div className="pet-edit-btn-wrapper">
-            <Button onClick={handleLike}>Like</Button>
+            <Button onClick={handleLike}>{isLiked ? "unlike" : "Like"}</Button>
           </div>
         )}
         <Card.Title>{name}</Card.Title>

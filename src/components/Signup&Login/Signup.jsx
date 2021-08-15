@@ -8,6 +8,7 @@ import AppContext from "../../context/AppContext";
 import Alert from "react-bootstrap/Alert";
 import LoadSpinner from "../shered/LoadSpinner";
 import { ref } from "firebase/storage";
+import localforage from "localforage";
 
 export default function SignUp({ handleClose, setSignUpState, signUpState }) {
   const [signUpForm, setSignUpForm] = useState({});
@@ -29,7 +30,8 @@ export default function SignUp({ handleClose, setSignUpState, signUpState }) {
           "http://localhost:5000/users/signUp",
           signUpForm
         );
-        setCurrentUser(user.data[0]);
+        setCurrentUser(user.data.user);
+        localforage.setItem("token", user.data.token);
         setSignUpForm({});
         setError();
         handleClose(false);

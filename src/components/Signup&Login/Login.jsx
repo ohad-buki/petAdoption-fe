@@ -5,6 +5,7 @@ import axios from "axios";
 import SwitchBtn from "./SwitchBtn";
 import AppContext from "../../context/AppContext";
 import Alert from "react-bootstrap/Alert";
+import localforage from "localforage";
 
 export default function Login({ handleClose, setSignUpState, signUpState }) {
   const { setCurrentUser } = useContext(AppContext);
@@ -22,7 +23,8 @@ export default function Login({ handleClose, setSignUpState, signUpState }) {
         "http://localhost:5000/users/login",
         loginForm
       );
-      setCurrentUser(user.data[0]);
+      setCurrentUser(user.data.user);
+      localforage.setItem("token", user.data.token);
       setLoginForm({});
       handleClose(false);
     } catch (err) {

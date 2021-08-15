@@ -5,10 +5,12 @@ import ModalComp from "./ModalLogin";
 import Logo from "../shered/Logo";
 import AppContext from "../../context/AppContext";
 import { Link, NavLink } from "react-router-dom";
+import localforage from "localforage";
 
 export default function NavbarComp() {
   const { currentUser, setCurrentUser } = useContext(AppContext);
   const logout = () => {
+    localforage.removeItem("token");
     setCurrentUser();
   };
   return (

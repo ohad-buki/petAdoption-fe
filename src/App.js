@@ -14,10 +14,26 @@ import SearchPage from "./components/search/SearchPage";
 import AppContext from "./context/AppContext";
 import "./App.css";
 import PetPage from "./components/petPage/PetPage";
+import axios from "axios";
+import localforage from "localforage";
 
 function App() {
   const [currentUser, setCurrentUser] = useState();
-
+  useEffect(() => {
+    try {
+      localforage.getItem("token", async (err, value) => {
+        if (err) {
+          return console.log(err);
+        }
+        axios.defaults.headers.common["Authorization"] = value;
+        const user = await axios.get(`http://localhost:5000/users/logedin`);
+        console.log(user);
+        setCurrentUser(user.data);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
   return (
     <div className="App">
       <AppContext.Provider

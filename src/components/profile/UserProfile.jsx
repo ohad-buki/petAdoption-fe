@@ -13,30 +13,37 @@ export default function UserProfile() {
   const [petList, setPetList] = useState([]);
   const [renderdList, setRenderdList] = useState([]);
   const [filterBy, setFilterBy] = useState();
+  const [likedList, setLikedList] = useState();
 
   useEffect(async () => {
     try {
       const pets = await axios.get(
         `http://localhost:5000/pets/?user_id=${currentUser.user_id}`
       );
+      const likedPets = await axios.get(
+        `http://localhost:5000/likes/getPetsByUser/${currentUser.user_id}`
+      );
+      setLikedList(likedPets.data);
       setPetList(pets.data);
-      setRenderdList(pets.data);
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  }, [renderdList]);
 
   const handleFilter = (e) => {
     setFilterBy(e.target.name);
   };
 
   useEffect(() => {
-    console.log(filterBy);
     if (filterBy) {
-      const filterdList = petList.filter((pet) => {
-        return pet.status === filterBy;
-      });
-      setRenderdList(filterdList);
+      if (filterBy === "liked") {
+        setRenderdList(likedList);
+      } else {
+        const filterdList = petList.filter((pet) => {
+          return pet.status === filterBy;
+        });
+        setRenderdList(filterdList);
+      }
     }
   }, [filterBy]);
 
@@ -71,7 +78,12 @@ export default function UserProfile() {
                 >
                   Fosterd
                 </Button>
-                <Button variant="outline-success" className="search-btn">
+                <Button
+                  variant="outline-success"
+                  className="search-btn"
+                  name="liked"
+                  onClick={handleFilter}
+                >
                   Liked
                 </Button>
               </ButtonGroup>
@@ -91,7 +103,7 @@ export default function UserProfile() {
                     />
                   );
                 })) ||
-                "No pets yet ;)"}
+                "chose what pets to show"}
             </div>
           </div>
         </div>
