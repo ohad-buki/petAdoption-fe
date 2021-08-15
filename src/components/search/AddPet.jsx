@@ -58,7 +58,7 @@ export default function AddPet() {
             name="type"
             onChange={handleChange}
           >
-            <option value="0">Type</option>
+            <option value="">Type</option>
             <option value="dog">dog</option>
             <option value="cat">cat</option>
           </Form.Select>

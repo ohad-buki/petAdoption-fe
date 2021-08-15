@@ -1,13 +1,51 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./PetCard.css";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import ModalPetEdit from "../petPage/ModalPetEdit";
+import axios from "axios";
 import AppContext from "../../context/AppContext";
 import { Link } from "react-router-dom";
 
 export default function PetCard({ img, name, type, status, pet_id }) {
   const { currentUser } = useContext(AppContext);
+  const [isLiked, setIsLiked] = useState(false);
+  const [usersLike, setUsersLike] = useState();
+  useEffect(async () => {
+    try {
+      const users = await axios.get(
+        `http://localhost:5000/likes/getUsersByPet/${pet_id}`
+      );
+      const likeStatus = await axios.get(
+        `http://localhost:5000/likes/specific/${currentUser.user_id}/${pet_id}`
+      );
+      if (likeStatus.length > 0) {
+        setIsLiked(true);
+      }
+      setUsersLike(users.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [isLiked]);
+
+  const handleLike = async () => {
+    try {
+      let res;
+      if (isLiked === true) {
+        res = await axios.delete(`http://localhost:5000/`, {
+          user_id: currentUser.user_id,
+          pet_id: pet_id,
+        });
+      } else {
+        res = await axios.post(`http://localhost:5000/likes`, {
+          user_id: currentUser.user_id,
+          pet_id: pet_id,
+        });
+      }
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Card
       style={{
@@ -21,7 +59,7 @@ export default function PetCard({ img, name, type, status, pet_id }) {
       <Card.Body>
         {currentUser && (
           <div className="pet-edit-btn-wrapper">
-            <Button>Like</Button>
+            <Button onClick={handleLike}>Like</Button>
           </div>
         )}
         <Card.Title>{name}</Card.Title>

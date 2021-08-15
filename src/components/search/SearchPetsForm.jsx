@@ -32,7 +32,12 @@ export default function SearchPetsForm() {
   };
 
   const handleChange = (e) => {
-    setSearchForm({ ...searchForm, [e.target.name]: e.target.value });
+    console.log(e.target.value);
+    if (e.target.name === "hypoallergenic") {
+      setSearchForm({ ...searchForm, [e.target.name]: e.target.checked });
+    } else {
+      setSearchForm({ ...searchForm, [e.target.name]: e.target.value });
+    }
   };
 
   const handleCheck = (e) => {
@@ -48,7 +53,7 @@ export default function SearchPetsForm() {
             name="type"
             onChange={handleChange}
           >
-            <option>type</option>
+            <option value="">type</option>
             <option value="dog">Dog</option>
             <option value="cat">Cat</option>
           </Form.Select>
@@ -61,9 +66,10 @@ export default function SearchPetsForm() {
                 name="status"
                 onChange={handleChange}
               >
-                <option>Adoption Status</option>
-                <option value="1">Adopted</option>
-                <option value="2">Available</option>
+                <option value="">Adoption Status</option>
+                <option value="adopted">Adopted</option>
+                <option value="fosterd">Fosterd</option>
+                <option value="available">Available</option>
               </Form.Select>
             </Form.Group>
             {/* <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -89,33 +95,41 @@ export default function SearchPetsForm() {
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Height</Form.Label>
               <Form.Control
-                name="heightRangeFrom"
+                name="minHeight"
                 type="number"
-                placeholder="from"
+                placeholder="min"
                 onChange={handleChange}
               />
               <Form.Control
-                name="heightRangeTO"
+                name="maxHeight"
                 type="number"
-                placeholder="to"
+                placeholder="max"
                 onChange={handleChange}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Weight</Form.Label>
               <Form.Control
-                name="weightRangeFrom"
+                name="minWeight"
                 type="number"
-                placeholder="from"
+                placeholder="min"
                 onChange={handleChange}
               />
               <Form.Control
-                name="weightRangeTO"
+                name="maxWeight"
                 type="number"
-                placeholder="to"
+                placeholder="max"
                 onChange={handleChange}
               />
             </Form.Group>
+            <div className="d-flex justify-content-center">
+              <Form.Check
+                type="checkbox"
+                label="Hypoallergenic"
+                name="hypoallergenic"
+                onChange={handleChange}
+              />
+            </div>
           </>
         )}
         <div className="d-flex">
