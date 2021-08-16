@@ -19,6 +19,7 @@ import localforage from "localforage";
 
 function App() {
   const [currentUser, setCurrentUser] = useState();
+
   useEffect(() => {
     try {
       localforage.getItem("token", async (err, value) => {
@@ -28,12 +29,15 @@ function App() {
         axios.defaults.headers.common["Authorization"] = value;
         const user = await axios.get(`http://localhost:5000/users/logedin`);
         console.log(user);
-        setCurrentUser(user.data);
+        if (user.data.email && !currentUser) {
+          setCurrentUser(user.data);
+        }
       });
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  }, [currentUser]);
+
   return (
     <div className="App">
       <AppContext.Provider

@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useRef } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import AppContext from "../../context/AppContext";
 
 export default function SearchUsersForm() {
   const [searchForm, setSearchForm] = useState({});
   const [userList, setUserList] = useState();
+  const { currentUser } = useContext(AppContext);
+  const formRef = useRef();
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
@@ -13,16 +16,20 @@ export default function SearchUsersForm() {
     const formArr = Object.entries(searchForm);
     if (formArr.length) {
       formArr.forEach(([key, value], i) => {
-        if (i === 0) {
-          query += `${key}=${value}`;
-        } else {
-          query += `&${key}=${value}`;
+        if (value) {
+          if (i === 0) {
+            query += `${key}=${value}`;
+          } else {
+            query += `&${key}=${value}`;
+          }
         }
       });
     }
     try {
       const users = await axios.get(`http://localhost:5000/users${query}`);
+      console.log(users);
       setUserList(users.data);
+      formRef.current.reset();
     } catch (e) {
       console.log(e);
     }
@@ -46,7 +53,7 @@ export default function SearchUsersForm() {
 
   return (
     <>
-      <Form className="px-2" onSubmit={handleSubmit}>
+      <Form className="px-2" onSubmit={handleSubmit} ref={formRef}>
         <Form.Group controlId="formGridEmail">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -79,14 +86,16 @@ export default function SearchUsersForm() {
               <li key={user.user_id} className="user-row">
                 <div>{user.name}</div>
                 <div>{user.email}</div>
-                <Button
-                  onClick={(e) => {
-                    makeAdmin(e, user.is_admin);
-                  }}
-                  name={user.user_id}
-                >
-                  {user.is_admin ? "unAdmin" : "Make Admin"}
-                </Button>
+                {currentUser.user_id !== user.user_id && (
+                  <Button
+                    onClick={(e) => {
+                      makeAdmin(e, user.is_admin);
+                    }}
+                    name={user.user_id}
+                  >
+                    {user.is_admin ? "unAdmin" : "Make Admin"}
+                  </Button>
+                )}
               </li>
             );
           })}

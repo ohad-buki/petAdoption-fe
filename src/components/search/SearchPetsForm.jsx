@@ -16,10 +16,12 @@ export default function SearchPetsForm() {
     try {
       if (formArr.length) {
         formArr.forEach(([key, value], i) => {
-          if (i === 0) {
-            query += `${key}=${value}`;
-          } else {
-            query += `&${key}=${value}`;
+          if (value) {
+            if (i === 0) {
+              query += `${key}=${value}`;
+            } else {
+              query += `&${key}=${value}`;
+            }
           }
         });
       }
@@ -97,13 +99,13 @@ export default function SearchPetsForm() {
               <Form.Control
                 name="minHeight"
                 type="number"
-                placeholder="min"
+                placeholder="min in cm"
                 onChange={handleChange}
               />
               <Form.Control
                 name="maxHeight"
                 type="number"
-                placeholder="max"
+                placeholder="max in cm"
                 onChange={handleChange}
               />
             </Form.Group>
@@ -112,13 +114,13 @@ export default function SearchPetsForm() {
               <Form.Control
                 name="minWeight"
                 type="number"
-                placeholder="min"
+                placeholder="min in kg"
                 onChange={handleChange}
               />
               <Form.Control
                 name="maxWeight"
                 type="number"
-                placeholder="max"
+                placeholder="max in kg"
                 onChange={handleChange}
               />
             </Form.Group>

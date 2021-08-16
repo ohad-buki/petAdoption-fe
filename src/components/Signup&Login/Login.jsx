@@ -23,8 +23,8 @@ export default function Login({ handleClose, setSignUpState, signUpState }) {
         "http://localhost:5000/users/login",
         loginForm
       );
+      await localforage.setItem("token", user.data.token);
       setCurrentUser(user.data.user);
-      localforage.setItem("token", user.data.token);
       setLoginForm({});
       handleClose(false);
     } catch (err) {
