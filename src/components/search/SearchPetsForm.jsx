@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
@@ -8,6 +8,7 @@ export default function SearchPetsForm() {
   const [advenced, setAdvenced] = useState(false);
   const [searchForm, setSearchForm] = useState({});
   const [petList, setPetList] = useState([]);
+  const formRef = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +29,7 @@ export default function SearchPetsForm() {
       const pets = await axios.get(`http://localhost:5000/pets${query}`);
       console.log(pets);
       setPetList(pets.data);
+      formRef.current.reset();
     } catch (e) {
       console.log(e);
     }
@@ -48,7 +50,7 @@ export default function SearchPetsForm() {
 
   return (
     <>
-      <Form className="px-2 search-form" onSubmit={handleSubmit}>
+      <Form className="px-2 search-form" onSubmit={handleSubmit} ref={formRef}>
         <Form.Group className="mb-3">
           <Form.Select
             aria-label="Default select example"

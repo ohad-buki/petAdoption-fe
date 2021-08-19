@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -11,6 +11,7 @@ export default function AddPet() {
   const [addPetForm, setAddPetForm] = useState({ hypoallergenic: false });
   const [isLoading, setIsLoading] = useState(false);
   const [message, setmessage] = useState();
+  const formRef = useRef();
 
   const handleChange = (e) => {
     if (e.target.name === "hypoallergenic") {
@@ -29,6 +30,7 @@ export default function AddPet() {
       );
       console.log(res);
       setmessage(res);
+      formRef.current.reset();
     } catch (e) {
       console.log(e);
     }
@@ -51,7 +53,7 @@ export default function AddPet() {
 
   return (
     <>
-      <Form className="px-2" onSubmit={handleSubmit}>
+      <Form className="px-2" onSubmit={handleSubmit} ref={formRef}>
         <Form.Group className="mb-3">
           <Form.Select
             aria-label="Default select example"
