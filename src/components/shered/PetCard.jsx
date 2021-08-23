@@ -59,7 +59,13 @@ export default function PetCard({ img, name, type, status, pet_id }) {
         position: "relative",
       }}
     >
-      <Card.Img variant="top" src={img} />
+      <Card.Img
+        variant="top"
+        src={img}
+        style={{
+          height: "230px",
+        }}
+      />
       <Card.Body>
         {currentUser && (
           <div className="pet-edit-btn-wrapper">
