@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import AppContext from "../../context/AppContext";
 import { Link } from "react-router-dom";
+import UsersLikeModal from "./UsersLikeModal";
 
 export default function PetCard({ img, name, type, status, pet_id }) {
   const { currentUser } = useContext(AppContext);
@@ -18,7 +19,6 @@ export default function PetCard({ img, name, type, status, pet_id }) {
       const likeStatus = await axios.get(
         `http://localhost:5000/likes/specific/${currentUser.user_id}/${pet_id}`
       );
-      console.log(likeStatus);
       if (likeStatus.data.length > 0) {
         setIsLiked(true);
       }
@@ -26,7 +26,7 @@ export default function PetCard({ img, name, type, status, pet_id }) {
     } catch (e) {
       console.log(e);
     }
-  }, [isLiked]);
+  }, [isLiked, currentUser]);
 
   const handleLike = async () => {
     try {
@@ -70,6 +70,9 @@ export default function PetCard({ img, name, type, status, pet_id }) {
         {currentUser && (
           <div className="pet-edit-btn-wrapper">
             <Button onClick={handleLike}>{isLiked ? "unlike" : "Like"}</Button>
+            {usersLike && usersLike.length > 0 && (
+              <UsersLikeModal usersLike={usersLike} />
+            )}
           </div>
         )}
         <Card.Title>{name}</Card.Title>

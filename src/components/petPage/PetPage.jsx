@@ -25,7 +25,7 @@ export default function PetPage() {
   const handleClick = async (e) => {
     try {
       const pet = await axios.put(
-        `http://localhost:5000/pets/edit/${currentPet.pet_id}`,
+        `http://localhost:5000/pets/adoptOrFoster/${currentPet.pet_id}`,
         {
           status: e.target.name,
           user_id: e.target.name === "available" ? 0 : currentUser.user_id,
@@ -85,11 +85,13 @@ export default function PetPage() {
               <div className="btn-group-wrapper">
                 {currentUser && (
                   <ButtonGroup aria-label="Basic example">
-                    {currentUser.is_admin && (
+                    {currentUser.is_admin ? (
                       <ModalPetEdit
                         pet={currentPet}
                         setCurrentPet={setCurrentPet}
                       />
+                    ) : (
+                      ""
                     )}
                     {currentPet.status === "available" && (
                       <Button

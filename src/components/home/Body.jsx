@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./body.css";
 import PetCard from "../shered/PetCard";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import AppContext from "../../context/AppContext";
+
 export default function Body() {
   const [petList, setPetList] = useState([]);
+  const { currentUser } = useContext(AppContext);
 
   useEffect(async () => {
     try {
       const pets = await axios.get(`http://localhost:5000/pets/limit/3`);
       setPetList(pets.data);
-      console.log(pets);
     } catch (e) {
       console.log(e);
     }

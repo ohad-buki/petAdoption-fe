@@ -16,3 +16,18 @@
   left: 10px;
   top: 10px;
 }
+
+.users-like-list {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 10px;
+  padding-bottom: 5px;
+  border-bottom: rgb(173, 173, 173) solid 1px;
+}
+
+.profile-pic-small {
+  border-radius: 50%;
+  height: 30px;
+  margin-inline-end: 5px;
+}
