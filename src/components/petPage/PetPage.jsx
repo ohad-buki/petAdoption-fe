@@ -28,7 +28,7 @@ export default function PetPage() {
         `http://localhost:5000/pets/adoptOrFoster/${currentPet.pet_id}`,
         {
           status: e.target.name,
-          user_id: e.target.name === "available" ? 0 : currentUser.user_id,
+          user_id: e.target.name === "available" ? null : currentUser.user_id,
         }
       );
       setCurrentPet(pet.data[0]);
