@@ -13,16 +13,18 @@ export default function PetCard({ img, name, type, status, pet_id }) {
   const [usersLike, setUsersLike] = useState();
   useEffect(async () => {
     try {
-      const users = await axios.get(
-        `http://localhost:5000/likes/getUsersByPet/${pet_id}`
-      );
-      const likeStatus = await axios.get(
-        `http://localhost:5000/likes/specific/${currentUser.user_id}/${pet_id}`
-      );
-      if (likeStatus.data.length > 0) {
-        setIsLiked(true);
+      if (currentUser) {
+        const users = await axios.get(
+          `http://localhost:5000/likes/getUsersByPet/${pet_id}`
+        );
+        const likeStatus = await axios.get(
+          `http://localhost:5000/likes/specific/${currentUser.user_id}/${pet_id}`
+        );
+        if (likeStatus.data.length > 0) {
+          setIsLiked(true);
+        }
+        setUsersLike(users.data);
       }
-      setUsersLike(users.data);
     } catch (e) {
       console.log(e);
     }
