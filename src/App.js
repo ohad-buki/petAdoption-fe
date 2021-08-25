@@ -28,6 +28,7 @@ function App() {
         }
         axios.defaults.headers.common["Authorization"] = value;
         const user = await axios.get(`http://localhost:5000/users/logedin`);
+        console.log(value, user);
         if (user.data.email && !currentUser) {
           setCurrentUser(user.data);
         }
