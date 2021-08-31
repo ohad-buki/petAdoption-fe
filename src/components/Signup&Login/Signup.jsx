@@ -27,7 +27,7 @@ export default function SignUp({ handleClose, setSignUpState, signUpState }) {
     if (signUpForm.password === confirmPassRef.current.value) {
       try {
         const user = await axios.post(
-          "http://localhost:5000/users/signUp",
+          `${process.env.REACT_APP_HOST}/users/signUp`,
           signUpForm
         );
         setCurrentUser(user.data.user);

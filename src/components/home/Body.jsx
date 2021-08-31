@@ -11,7 +11,9 @@ export default function Body() {
 
   useEffect(async () => {
     try {
-      const pets = await axios.get(`http://localhost:5000/pets/limit/3`);
+      const pets = await axios.get(
+        `${process.env.REACT_APP_HOST}/pets/limit/3`
+      );
       setPetList(pets.data);
     } catch (e) {
       console.log(e);

@@ -15,7 +15,9 @@ export default function PetPage() {
   useEffect(async () => {
     console.log(id);
     try {
-      const pet = await axios.get(`http://localhost:5000/pets/?pet_id=${id}`);
+      const pet = await axios.get(
+        `${process.env.REACT_APP_HOST}/pets/?pet_id=${id}`
+      );
       setCurrentPet(pet.data[0]);
     } catch (e) {
       console.log(e);
@@ -25,7 +27,7 @@ export default function PetPage() {
   const handleClick = async (e) => {
     try {
       const pet = await axios.put(
-        `http://localhost:5000/pets/adoptOrFoster/${currentPet.pet_id}`,
+        `${process.env.REACT_APP_HOST}/pets/adoptOrFoster/${currentPet.pet_id}`,
         {
           status: e.target.name,
           user_id: e.target.name === "available" ? null : currentUser.user_id,

@@ -20,7 +20,7 @@ export default function EditPetForm({ pet, handleClose, setCurrentPet }) {
     e.preventDefault();
     try {
       const pet = await axios.put(
-        `http://localhost:5000/pets/edit/${pet_id}`,
+        `${process.env.REACT_APP_HOST}/pets/edit/${pet_id}`,
         petEditForm
       );
       setCurrentPet(pet.data[0]);

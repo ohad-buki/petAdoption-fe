@@ -20,7 +20,7 @@ export default function Login({ handleClose, setSignUpState, signUpState }) {
     e.preventDefault();
     try {
       const user = await axios.post(
-        "http://localhost:5000/users/login",
+        `${process.env.REACT_APP_HOST}/users/login`,
         loginForm
       );
       await localforage.setItem("token", user.data.token);

@@ -25,7 +25,7 @@ export default function EditUserForm({ handleClose }) {
       try {
         console.log(profileEditForm);
         const user = await axios.put(
-          `http://localhost:5000/users/edit/${currentUser.user_id}`,
+          `${process.env.REACT_APP_HOST}/users/edit/${currentUser.user_id}`,
           profileEditForm
         );
         setCurrentUser(user.data[0]);

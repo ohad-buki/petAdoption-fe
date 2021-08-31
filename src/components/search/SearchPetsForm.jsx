@@ -26,7 +26,9 @@ export default function SearchPetsForm() {
           }
         });
       }
-      const pets = await axios.get(`http://localhost:5000/pets${query}`);
+      const pets = await axios.get(
+        `${process.env.REACT_APP_HOST}/pets${query}`
+      );
       console.log(pets);
       setPetList(pets.data);
       formRef.current.reset();

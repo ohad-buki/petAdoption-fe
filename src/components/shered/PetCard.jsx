@@ -15,10 +15,10 @@ export default function PetCard({ img, name, type, status, pet_id }) {
     try {
       if (currentUser) {
         const users = await axios.get(
-          `http://localhost:5000/likes/getUsersByPet/${pet_id}`
+          `${process.env.REACT_APP_HOST}/likes/getUsersByPet/${pet_id}`
         );
         const likeStatus = await axios.get(
-          `http://localhost:5000/likes/specific/${currentUser.user_id}/${pet_id}`
+          `${process.env.REACT_APP_HOST}/likes/specific/${currentUser.user_id}/${pet_id}`
         );
         if (likeStatus.data.length > 0) {
           setIsLiked(true);
@@ -35,13 +35,13 @@ export default function PetCard({ img, name, type, status, pet_id }) {
       let res;
       console.log(isLiked);
       if (isLiked === true) {
-        res = await axios.put(`http://localhost:5000/likes`, {
+        res = await axios.put(`${process.env.REACT_APP_HOST}/likes`, {
           user_id: currentUser.user_id,
           pet_id: pet_id,
         });
         setIsLiked(false);
       } else {
-        res = await axios.post(`http://localhost:5000/likes`, {
+        res = await axios.post(`${process.env.REACT_APP_HOST}/likes`, {
           user_id: currentUser.user_id,
           pet_id: pet_id,
         });

@@ -25,7 +25,7 @@ export default function AddPet() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:5000/pets/addPet",
+        `${process.env.REACT_APP_HOST}/pets/addPet`,
         addPetForm
       );
       console.log(res);

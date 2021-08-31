@@ -18,10 +18,10 @@ export default function UserProfile() {
   useEffect(async () => {
     try {
       const pets = await axios.get(
-        `http://localhost:5000/pets/?user_id=${currentUser.user_id}`
+        `${process.env.REACT_APP_HOST}/pets/?user_id=${currentUser.user_id}`
       );
       const likedPets = await axios.get(
-        `http://localhost:5000/likes/getPetsByUser/${currentUser.user_id}`
+        `${process.env.REACT_APP_HOST}/likes/getPetsByUser/${currentUser.user_id}`
       );
       setLikedList(likedPets.data);
       setPetList(pets.data);

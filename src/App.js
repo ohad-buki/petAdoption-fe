@@ -27,8 +27,9 @@ function App() {
           return console.log(err);
         }
         axios.defaults.headers.common["Authorization"] = value;
-        const user = await axios.get(`http://localhost:5000/users/logedin`);
-        console.log(value, user);
+        const user = await axios.get(
+          `${process.env.REACT_APP_HOST}/users/logedin`
+        );
         if (user.data.email && !currentUser) {
           setCurrentUser(user.data);
         }

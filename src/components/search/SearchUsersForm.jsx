@@ -26,7 +26,9 @@ export default function SearchUsersForm() {
       });
     }
     try {
-      const users = await axios.get(`http://localhost:5000/users${query}`);
+      const users = await axios.get(
+        `${process.env.REACT_APP_HOST}/users${query}`
+      );
       console.log(users);
       setUserList(users.data);
       formRef.current.reset();
@@ -42,7 +44,7 @@ export default function SearchUsersForm() {
   const makeAdmin = async (e, isAdmin) => {
     try {
       const user = await axios.put(
-        `http://localhost:5000/users/edit/${e.target.name}`,
+        `${process.env.REACT_APP_HOST}/users/edit/${e.target.name}`,
         { is_admin: !isAdmin }
       );
       handleSubmit();
