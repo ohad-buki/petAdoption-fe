@@ -11,6 +11,7 @@ export default function PetCard({ img, name, type, status, pet_id }) {
   const { currentUser } = useContext(AppContext);
   const [isLiked, setIsLiked] = useState(false);
   const [usersLike, setUsersLike] = useState();
+
   useEffect(async () => {
     try {
       if (currentUser) {
